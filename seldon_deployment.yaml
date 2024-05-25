@@ -1,0 +1,17 @@
+apiVersion: machinelearning.seldon.io/v1
+kind: SeldonDeployment
+metadata:
+  name: tennis-model
+  namespace: seldon
+spec:
+  name: tennis
+  predictors:
+  - componentSpecs:
+    - spec:
+        containers:
+        - name: classifier
+          image: leochen66/sklearn_tennis:2.1
+    graph:
+      name: classifier
+    name: default
+    replicas: 1
