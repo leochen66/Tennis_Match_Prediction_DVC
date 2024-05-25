@@ -1,4 +1,5 @@
 import os
+import shutil
 import pandas as pd
 import opendatasets as od
 
@@ -19,6 +20,14 @@ def data_pull() -> pd.DataFrame:
     filepath = os.path.join(DATASET_NAME, DATASET_FILE)
     if os.path.exists(filepath):
         data = pd.read_csv(filepath)
+
+        parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+        data_dir = os.path.join(parent_dir, 'data')
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+        
+        # copy data to data folder
+        shutil.copy(filepath, data_dir)
 
         # delete download file
         os.remove(filepath)
