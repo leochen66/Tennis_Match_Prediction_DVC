@@ -1,0 +1,54 @@
+schema: '2.0'
+stages:
+  data_pull:
+    cmd: python workflows/data_pull.py
+    deps:
+    - path: workflows/data_pull.py
+      hash: md5
+      md5: de592047ef87d994234cd1e20843ac81
+      size: 910
+    outs:
+    - path: data/atp_tennis.csv
+      hash: md5
+      md5: 109d40a6369c5b4a866c4645293b8b51
+      size: 8370017
+  preprocess:
+    cmd: python workflows/data_preprocess.py
+    deps:
+    - path: data/atp_tennis.csv
+      hash: md5
+      md5: 109d40a6369c5b4a866c4645293b8b51
+      size: 8370017
+    - path: workflows/data_preprocess.py
+      hash: md5
+      md5: ac5bacdbeb764f53599c8f4b8421ef86
+      size: 1675
+    outs:
+    - path: data/test.csv
+      hash: md5
+      md5: 9a151d403d3e4c52fdbbb33ca5370539
+      size: 377968
+    - path: data/train.csv
+      hash: md5
+      md5: 5b9140af7ca5e7896f1ae3ac93a4d0d4
+      size: 1512593
+  train:
+    cmd: python workflows/model_train.py
+    deps:
+    - path: data/test.csv
+      hash: md5
+      md5: 9a151d403d3e4c52fdbbb33ca5370539
+      size: 377968
+    - path: data/train.csv
+      hash: md5
+      md5: 5b9140af7ca5e7896f1ae3ac93a4d0d4
+      size: 1512593
+    - path: workflows/model_train.py
+      hash: md5
+      md5: a09b3c2f5a2d90563d5aa66428fb69a5
+      size: 3295
+    outs:
+    - path: artifacts
+      hash: md5
+      md5: c775bb03401346a7e6f247e7c2278025
+      size: 19908

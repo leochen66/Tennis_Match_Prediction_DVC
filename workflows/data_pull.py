@@ -4,14 +4,14 @@ import pandas as pd
 import opendatasets as od
 
 from aws_logger import logger
-from config import DATASET_FILE
+from config import DATASET_FILE, data_dir
 
 
 DATASET_NAME = "atp-tennis-2000-2023daily-pull"
 DATASET_LINK = f"https://www.kaggle.com/datasets/dissfya/{DATASET_NAME}"
 
 
-def data_pull() -> pd.DataFrame:
+def data_pull():
     # Pull data from Kaggle
     od.download(DATASET_LINK)
     logger.info("File download successfully")
@@ -21,8 +21,6 @@ def data_pull() -> pd.DataFrame:
     if os.path.exists(filepath):
         data = pd.read_csv(filepath)
 
-        parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-        data_dir = os.path.join(parent_dir, 'data')
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
         
@@ -33,7 +31,10 @@ def data_pull() -> pd.DataFrame:
         os.remove(filepath)
         os.rmdir(DATASET_NAME)
 
-        return data
     else:
         logger.error("Error: File download failed")
         return None
+
+
+if __name__ == "__main__":
+    data_pull()

@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import pickle
 import boto3
+import shutil
+from config import *
 from datetime import datetime
 
 from sklearn.ensemble import RandomForestClassifier
@@ -69,7 +71,29 @@ def evaluation(model: RandomForestClassifier, x_test: pd.DataFrame, y_test: pd.S
 
     # delete artifact files
     for file_name in [MODEL_FILE, REPORT_FILE, IMPORTANCE_PLOT_FILE]:
+        shutil.copy(file_name, artifact_dir)
         if os.path.exists(file_name):
             os.remove(file_name)
 
     return accuracy
+
+
+def get_data(filepath) -> (pd.DataFrame, pd.Series):
+    data_df = pd.read_csv(filepath)
+
+    features = ['Series', 'Court', 'Surface', 'Player_1', 'Player_2', 'Rank_1', 'Rank_2', 'Pts_1', 'Pts_2', 'Odd_1', 'Odd_2']
+    x = data_df[features]
+    y = data_df['Label']
+
+    return x, y
+
+
+if __name__ == "__main__":
+    train_filepath = os.path.join(data_dir, TRAIN_DATA_FILE)
+    test_filepath = os.path.join(data_dir, TEST_DATA_FILE)
+
+    x_train, y_train = get_data(train_filepath)
+    x_test, y_test = get_data(test_filepath)
+
+    model = train(x_train, y_train)
+    evaluation(model, x_test, y_test)

@@ -1,0 +1,23 @@
+stages:
+  data_pull:
+    cmd: python workflows/data_pull.py
+    deps:
+    - workflows/data_pull.py
+    outs:
+    - data/atp_tennis.csv
+  preprocess:
+    cmd: python workflows/data_preprocess.py
+    deps:
+    - data/atp_tennis.csv
+    - workflows/data_preprocess.py
+    outs:
+    - data/test.csv
+    - data/train.csv
+  train:
+    cmd: python workflows/model_train.py
+    deps:
+    - data/test.csv
+    - data/train.csv
+    - workflows/model_train.py
+    outs:
+    - artifacts
