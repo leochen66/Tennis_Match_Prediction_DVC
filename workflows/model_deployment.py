@@ -27,4 +27,5 @@ def deployment_check(accuracy:float) -> bool:
         return False
 
 
-# if __name__=="__main__":
+if __name__=="__main__":
+    deployment()

@@ -12,5 +12,5 @@ TEST_DATA_FILE = "test.csv"
 # ARTIFACTS
 artifact_dir = "artifacts"
 MODEL_FILE = "model.pkl"
-REPORT_FILE = "report.txt"
+REPORT_FILE = "report.json"
 IMPORTANCE_PLOT_FILE = "feature_importance.png"

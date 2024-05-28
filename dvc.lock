@@ -45,10 +45,30 @@ stages:
       size: 1512593
     - path: workflows/model_train.py
       hash: md5
-      md5: a09b3c2f5a2d90563d5aa66428fb69a5
-      size: 3295
+      md5: 05af940e2c16df9818755146363ecdf7
+      size: 3708
     outs:
-    - path: artifacts
+    - path: artifacts/feature_importance.png
       hash: md5
       md5: c775bb03401346a7e6f247e7c2278025
       size: 19908
+    - path: artifacts/model.pkl
+      hash: md5
+      md5: 9e58872bd04d38e08eccef1014623a84
+      size: 15110719
+    - path: artifacts/report.txt
+      hash: md5
+      md5: 65e32f69a6a3ce9da995c5efb16b2c7a
+      size: 182
+  deployment:
+    cmd: python workflows/model_deployment.py
+    deps:
+    - path: artifacts
+      hash: md5
+      md5: 57f8eef3c872f5f6e258ef8cbb2baf15.dir
+      size: 15131006
+      nfiles: 3
+    - path: workflows/model_deployment.py
+      hash: md5
+      md5: 9c43a6aea2b80873a3d1bf64bf9e3686
+      size: 673

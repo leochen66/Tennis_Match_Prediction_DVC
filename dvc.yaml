@@ -20,4 +20,15 @@ stages:
     - data/train.csv
     - workflows/model_train.py
     outs:
-    - artifacts
+    - artifacts/model.pkl
+    - artifacts/report.txt
+    - artifacts/feature_importance.png
+  # deployment:
+  #   cmd: python workflows/model_deployment.py
+  #   deps:
+  #   - artifacts
+  #   - workflows/model_deployment.py
+metrics:
+- artifacts/report.json
+plots:
+- artifacts/feature_importance.png

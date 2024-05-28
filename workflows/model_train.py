@@ -5,6 +5,7 @@ import pickle
 import boto3
 import shutil
 from config import *
+import json
 from datetime import datetime
 
 from sklearn.ensemble import RandomForestClassifier
@@ -26,15 +27,22 @@ def evaluation(model: RandomForestClassifier, x_test: pd.DataFrame, y_test: pd.S
 
     # Test on testing data and generate report
     y_pred = model.predict(x_test)
-    report = classification_report(y_test, y_pred)
+    report = classification_report(y_test, y_pred, output_dict=True)
     accuracy = float(accuracy_score(y_test, y_pred))
     logger.info(f"Accuracy: {accuracy}")
 
-    # Save report
+    summary_report = {
+        "accuracy": accuracy,
+        "macro avg": {
+            "precision": report["macro avg"]["precision"],
+            "recall": report["macro avg"]["recall"],
+            "f1-score": report["macro avg"]["f1-score"]
+        }
+    }
+
+    # Save report as JSON
     with open(REPORT_FILE, 'w') as f:
-        f.write("Accuracy: " + str(accuracy) + "\n\n")
-        f.write("Classification Report:\n")
-        f.write(report)
+        json.dump(summary_report, f, indent=4)
 
     # Save feature importance plot
     feature_importances = model.feature_importances_
